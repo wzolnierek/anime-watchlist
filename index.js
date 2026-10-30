@@ -65,6 +65,7 @@ findAnime.addEventListener("submit", async function (e) {
                     <p>${anime.weightedScore}</p>
                 </div>
                 <p>${anime.description}</p>
+                <p>${anime.genres}</p>
             </div>
         </article>
         </li>
