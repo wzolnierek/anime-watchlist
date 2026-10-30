@@ -3,7 +3,9 @@
   <head>
     <link rel="stylesheet" href="index.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
     <title>MyWatchlist</title>
 
     <link rel="stylesheet" href="index.css" />
@@ -35,16 +37,32 @@
   <body>
     <header>
       <nav>
-        <a href="./mylist.html">MyList</a>
-        <a href="./search.html">Search</a>
+        <a href="./mylist.html">
+            <img class="nav-icon" src="images/tv.svg"/>
+            <p>Anime</p>
+        </a>
+        <a href="">
+            <img class="nav-icon" src="images/bookshelf(light).svg"/>
+            <p>Manga</p>
+        </a>
+        <a href="./search.html">
+            <img class="nav-icon" src="images/search.svg"/>
+            <p>Search</p>
+        </a>
       </nav>
     </header>
 
     <main>
         <form id="find-anime">
-            <input id="find-anime-search" type="search" placeholder="Search">
+            <img src="images/search.svg" class="search-icon" />
+            <input id="find-anime-search" type="search" placeholder="Search for a title">
         </form>
-        <ul id="items-container"></ul>
+        <ul id="items-container">
+            <div class="no-titles">
+                <img src="images/movie-clip.svg"/>
+                <p class="blank-search">Start exploring</p>
+            </div>
+        </ul>
     </main>
 
     <footer></footer>

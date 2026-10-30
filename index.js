@@ -46,30 +46,43 @@ findAnime.addEventListener("submit", async function (e) {
     const res = await fetch(url, options)
     const data = await res.json()
 
-    console.log(data.data.Page.media);
+    // console.log(data)
 
-    itemsContainer.innerHTML = data.data.Page.media.map(anime => `
-        <li>
-        <article class="search-card">
-            <img
-                src="${anime.coverImage.extraLarge}"
-                srcset="${anime.coverImage.large} 1x, ${anime.coverImage.extraLarge} 2x"
-                alt="${anime.title.romaji}"
-            />
-            <div>
-                <h3>${anime.title.romaji}</h3>
-                
-                <div>
-                    <p>${anime.format}</p>
-                    <p>${anime.episodes ===1 ? `${anime.duration} min` : `${anime.episodes} episodes`}</p>
-                    <p>${anime.weightedScore}</p>
+    if(data.data.Page.media.length===0){
+        itemsContainer.innerHTML = `<p class="blank-search no-titles">Unable to find what you’re looking for. Please try another search.</p>`
+    } else{
+        itemsContainer.innerHTML = data.data.Page.media.map(anime => `
+            <li>
+            <article class="search-card">
+                <img
+                    src="${anime.coverImage.extraLarge}"
+                    srcset="${anime.coverImage.large} 1x, ${anime.coverImage.extraLarge} 2x"
+                    alt="${anime.title.romaji}"
+                />
+                <div class="card-text">
+                    <h3>${anime.title.romaji}</h3>
+                    
+                    <div class="card-span">
+                        <p>${anime.format}</p>
+                        <p>${anime.episodes ===1 ? `${anime.duration} min` : `${anime.episodes} episodes`}</p>
+                        <p>${anime.weightedScore}%</p>
+                    </div>
+                    <p class="anime-desc">${anime.description}</p>
+                    <p class="card-tags">${anime.genres.join(", ")}</p>
                 </div>
-                <p>${anime.description}</p>
-                <p>${anime.genres}</p>
+            </article>
+            </li>
+            `).join("")
+    }
+
+
+    if (searchAnime.value==""){
+        itemsContainer.innerHTML = `
+            <div class="no-titles">
+                <img src="images/movie-clip.svg"/>
+                <p class="blank-search">Start exploring</p>
             </div>
-        </article>
-        </li>
-        `).join("")
+        `} 
 });
 
 // data.data.Page.media[0]
