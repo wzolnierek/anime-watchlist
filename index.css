@@ -2,3 +2,64 @@ html, body {
     margin: 0;
     padding: 0;
 }
+
+body{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* header */
+
+header a{
+    /* background-color: blue; */
+    padding: 10px;
+    text-decoration: none;
+
+    border: 1px solid black;
+
+}
+
+nav{
+    background-color: #A5A5A5;
+    width: 95%;
+    border-radius: 30px;
+    height: 60px;
+
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+#find-anime-search{
+    margin-top: 10px;
+    width: 90vw;
+    height: 40px;
+    appearance: none;
+    font-size: 16px;
+
+    padding: 0 20px;
+    border-radius: 30px;
+}
+
+/* content */
+
+ul,li{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.search-card{
+    max-width: 95vw;
+}
+
+.search-card img{
+    max-width: 100px;
+}

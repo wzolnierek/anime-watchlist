@@ -50,7 +50,7 @@ findAnime.addEventListener("submit", async function (e) {
 
     itemsContainer.innerHTML = data.data.Page.media.map(anime => `
         <li>
-        <article>
+        <article class="search-card">
             <img
                 src="${anime.coverImage.extraLarge}"
                 srcset="${anime.coverImage.large} 1x, ${anime.coverImage.extraLarge} 2x"
