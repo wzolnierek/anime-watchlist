@@ -78,7 +78,7 @@ async function fetchAnime(searchTerm){
 
 function renderSearch(data){
     if(data.length===0){
-        itemsContainer.innerHTML = `<p class="blank-search no-titles">Unable to find what you’re looking for. Please try another search.</p>`
+        itemsContainer.innerHTML = `<p class="blank-search no-titles">Unable to find what you’re looking for.<br> Please try another search.</p>`
     } else{
         const animeList = JSON.parse(localStorage.getItem("animeList")) ?? []
         itemsContainer.innerHTML = data.map(anime => `

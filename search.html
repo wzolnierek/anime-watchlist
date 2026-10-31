@@ -41,7 +41,7 @@
             <img class="nav-icon" src="images/tv.svg"/>
             <p>Anime</p>
         </a>
-        <a href="">
+        <a href="./manga.html">
             <img class="nav-icon" src="images/bookshelf(light).svg"/>
             <p>Manga</p>
         </a>
@@ -58,8 +58,12 @@
 
     <main>
         <form id="find-anime">
-            <img src="images/search.svg" class="search-icon" />
-            <input id="find-anime-search" type="search" placeholder="Search for a title">
+            <img src="images/search.svg" class="search-icon" alt="search icon"/>
+            <input id="find-anime-search" type="search" placeholder="Search for a title" aria-label="Search media">
+            <select id="media-type" aria-label="Media type">
+                <option value="ANIME">Anime</option>
+                <option value="MANGA">Manga</option>
+            </select>
         </form>
         <ul id="items-container">
             <div class="no-titles">
