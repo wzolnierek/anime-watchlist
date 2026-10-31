@@ -29,16 +29,17 @@ query ($search: String!) {
 }
 `;
 
-renderPage()
-async function renderPage(){
-    const saved = localStorage.getItem("searchValue")
-    if (!saved) return
+// renderPage()
+// async function renderPage(){
+//     const saved = localStorage.getItem("searchValue")
+//     if (!saved) return
     
-    const startData = await fetchAnime(saved)
-    searchAnime.value = saved
-    if(startData) renderSearch(startData)
-}
+//     const startData = await fetchAnime(saved)
+//     searchAnime.value = saved
+//     if(startData) renderSearch(startData)
+// }
 
+let searchedList
 findAnime.addEventListener("submit",async function (e) {
     e.preventDefault();
     const searchTerm = searchAnime.value
@@ -50,10 +51,10 @@ findAnime.addEventListener("submit",async function (e) {
             </div>`
     } else{
         const data = await fetchAnime(searchTerm)
+        searchedList = data
         if(data) renderSearch(data)
-        localStorage.setItem("searchValue",searchTerm)
+        // localStorage.setItem("searchValue",searchTerm)
     }
-
 });
 
 async function fetchAnime(searchTerm){
@@ -79,6 +80,7 @@ function renderSearch(data){
     if(data.length===0){
         itemsContainer.innerHTML = `<p class="blank-search no-titles">Unable to find what you’re looking for. Please try another search.</p>`
     } else{
+        const animeList = JSON.parse(localStorage.getItem("animeList")) ?? []
         itemsContainer.innerHTML = data.map(anime => `
             <li>
             <article class="search-card">
@@ -88,7 +90,11 @@ function renderSearch(data){
                     alt="${anime.title.romaji}"
                 />
                 <div class="card-text">
-                    <h3>${anime.title.romaji}<span><button>add</button></span></h3>
+                    <h3>${anime.title.romaji}<span>
+                        <button class="add-btn" data-id="${anime.id}">
+                            ${animeList.some(item => item.id === anime.id) ? "added" : "add"}
+                        </button></span>
+                    </h3>
                     
                     <div class="card-span">
                         <p>${anime.format}</p>
@@ -103,6 +109,21 @@ function renderSearch(data){
             `).join("")
     }
 }
+
+itemsContainer.addEventListener("click",function(e){
+    const button = e.target.closest(".add-btn")
+    if (!button) return
+
+    const animeList = JSON.parse(localStorage.getItem("animeList")) ?? []
+    const newItem = searchedList.find( anime => anime.id === Number(button.dataset.id))
+    if (!animeList.some(anime => anime.id === newItem.id)) {
+        animeList.push(newItem)
+    }
+    
+    localStorage.setItem("animeList", JSON.stringify(animeList))
+    
+    button.textContent = "added"
+})
 
 
 // data.data.Page.media[0]
