@@ -29,8 +29,34 @@ query ($search: String!) {
 }
 `;
 
-findAnime.addEventListener("submit", async function (e) {
+renderPage()
+async function renderPage(){
+    const saved = localStorage.getItem("searchValue")
+    if (!saved) return
+    
+    const startData = await fetchAnime(saved)
+    searchAnime.value = saved
+    if(startData) renderSearch(startData)
+}
+
+findAnime.addEventListener("submit",async function (e) {
     e.preventDefault();
+    const searchTerm = searchAnime.value
+    if (searchTerm==""){
+        itemsContainer.innerHTML = `
+            <div class="no-titles">
+                <img src="images/movie-clip.svg"/>
+                <p class="blank-search">Start exploring</p>
+            </div>`
+    } else{
+        const data = await fetchAnime(searchTerm)
+        if(data) renderSearch(data)
+        localStorage.setItem("searchValue",searchTerm)
+    }
+
+});
+
+async function fetchAnime(searchTerm){
 
     const options = {
         method: "POST",
@@ -40,18 +66,20 @@ findAnime.addEventListener("submit", async function (e) {
         },
         body: JSON.stringify({
         query: query,
-        variables: { search: searchAnime.value },
+        variables: { search: searchTerm},
         }),
     };
     const res = await fetch(url, options)
     const data = await res.json()
 
-    // console.log(data)
+    return data.data.Page.media
+}
 
-    if(data.data.Page.media.length===0){
+function renderSearch(data){
+    if(data.length===0){
         itemsContainer.innerHTML = `<p class="blank-search no-titles">Unable to find what you’re looking for. Please try another search.</p>`
     } else{
-        itemsContainer.innerHTML = data.data.Page.media.map(anime => `
+        itemsContainer.innerHTML = data.map(anime => `
             <li>
             <article class="search-card">
                 <img
@@ -60,7 +88,7 @@ findAnime.addEventListener("submit", async function (e) {
                     alt="${anime.title.romaji}"
                 />
                 <div class="card-text">
-                    <h3>${anime.title.romaji}</h3>
+                    <h3>${anime.title.romaji}<span><button>add</button></span></h3>
                     
                     <div class="card-span">
                         <p>${anime.format}</p>
@@ -74,16 +102,8 @@ findAnime.addEventListener("submit", async function (e) {
             </li>
             `).join("")
     }
+}
 
-
-    if (searchAnime.value==""){
-        itemsContainer.innerHTML = `
-            <div class="no-titles">
-                <img src="images/movie-clip.svg"/>
-                <p class="blank-search">Start exploring</p>
-            </div>
-        `} 
-});
 
 // data.data.Page.media[0]
 // {
