@@ -61,7 +61,6 @@ header p{
     position: relative;
     display: flex;
     align-items: center;
-    /* justify-content: center; */
 }
 
 #find-anime-search{

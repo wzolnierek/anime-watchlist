@@ -53,7 +53,6 @@ findAnime.addEventListener("submit",async function (e) {
         const data = await fetchAnime(searchTerm)
         searchedList = data
         if(data) renderSearch(data)
-        // localStorage.setItem("searchValue",searchTerm)
     }
 });
 
