@@ -221,3 +221,6 @@ h1{
     font-size: 0.875rem;
 }
 
+nav > a[aria-current="page"] {
+  color: #6d4aff;
+}

@@ -1,7 +1,7 @@
 const myAnimeList = JSON.parse(localStorage.getItem("animeList")) ?? []
 const listContainer = document.getElementById("anime-container")
 
-function renderPage(){
+function renderAnime(){
     if(myAnimeList.length===0){
         listContainer.innerHTML = `<p class="blank-search no-titles">Nothing to find here...<br> Go search add something!</p>`
     } else {
