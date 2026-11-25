@@ -1,109 +1,133 @@
 <!doctype html>
 <html lang="en">
     <head>
-        <meta charset="UTF-8">
+        <meta charset="UTF-8" />
 
         <link rel="stylesheet" href="index.css" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+            rel="stylesheet"
+        />
         <title>MyWatchlist</title>
 
-        <link rel="icon" type="image/x-icon" href="/images/favicon/favicon.ico" />
         <link
-        rel="icon"
-        href="images/favicon/favicon.svg"
-        type="image/svg+xml"
-        sizes="any"
+            rel="icon"
+            type="image/x-icon"
+            href="/images/favicon/favicon.ico"
         />
         <link
-        rel="icon"
-        href="images/favicon/favicon-48x48.png"
-        type="image/png"
-        sizes="48x48"
+            rel="icon"
+            href="images/favicon/favicon.svg"
+            type="image/svg+xml"
+            sizes="any"
+        />
+        <link
+            rel="icon"
+            href="images/favicon/favicon-48x48.png"
+            type="image/png"
+            sizes="48x48"
         />
         <link rel="shortcut icon" href="images/favicon/favicon.ico" />
         <link
-        rel="apple-touch-icon"
-        href="images/favicon/apple-touch-icon.png"
-        sizes="180x180"
+            rel="apple-touch-icon"
+            href="images/favicon/apple-touch-icon.png"
+            sizes="180x180"
         />
         <link rel="manifest" href="/site.webmanifest" />
         <meta name="theme-color" content="#6d4aff" />
-  </head>
+    </head>
 
-  <!-- BODY -->
+    <!-- BODY -->
 
-  <body>
-    <nav>
-    <a href="#anime">
-        <img class="nav-icon" src="images/tv.svg"/>
-        <p>Anime</p>
-    </a>
-    <a href="#manga">
-        <img class="nav-icon" src="images/bookshelf-light.svg"/>
-        <p>Manga</p>
-    </a>
-    <a href="#search">
-        <img class="nav-icon" src="images/search.svg"/>
-        <p>Search</p>
-    </a>
-    <a href="#profile">
-        <img class="nav-icon" src="images/avatar.svg"/>
-        <p>Profile</p>
-    </a>
-    </nav>
+    <body>
+        <nav>
+            <a href="#anime">
+                <img class="nav-icon" src="images/tv.svg" />
+                <p>Anime</p>
+            </a>
+            <a href="#manga">
+                <img class="nav-icon" src="images/bookshelf-light.svg" />
+                <p>Manga</p>
+            </a>
+            <a href="#search">
+                <img class="nav-icon" src="images/search.svg" />
+                <p>Search</p>
+            </a>
+            <a href="#profile">
+                <img class="nav-icon" src="images/avatar.svg" />
+                <p>Profile</p>
+            </a>
+        </nav>
 
-    <main>
-    <!-- Anime -->
-    <section id="anime">
-        <h1>Anime</h1>
-        <form id="find-anime">
-            <img src="images/search.svg" class="search-icon" />
-            <input id="find-anime-search" type="search" placeholder="Search for a title">
-        </form>
-        <ul id="anime-container"></ul>
-    </section>
+        <main>
+            <!-- Anime -->
+            <section id="anime">
+                <h1>Anime</h1>
+                <form id="find-anime" class="search-bar">
+                    <img src="images/search.svg" class="search-icon" />
+                    <input
+                        id="find-anime-search"
+                        type="search"
+                        placeholder="Search for a title"
+                    />
+                </form>
+                <ul id="anime-container"></ul>
+                <div class="no-titles"></div>
+            </section>
 
-    <!-- Manga -->
-    <section id="manga" hidden>
-        <h1>Manga</h1>
-        <form id="find-anime">
-            <img src="images/search.svg" class="search-icon" />
-            <input id="find-anime-search" type="search" placeholder="Search for a title">
-        </form>
-        <ul id="anime-container"></ul>
-    </section>
+            <!-- Manga -->
+            <section id="manga" hidden>
+                <h1>Manga</h1>
+                <form id="find-manga" class="search-bar">
+                    <img src="images/search.svg" class="search-icon" />
+                    <input
+                        id="find-manga-search"
+                        type="search"
+                        placeholder="Search for a title"
+                    />
+                </form>
+                <ul id="manga-container"></ul>
+            </section>
 
-    <!-- Search -->
-    <section id="search" hidden>
-        <form id="find-anime">
-            <img src="images/search.svg" class="search-icon" alt="search icon"/>
-            <input id="find-anime-search" type="search" placeholder="Search for a title" aria-label="Search media">
-            <select id="media-type" aria-label="Media type">
-                <option value="ANIME">Anime</option>
-                <option value="MANGA">Manga</option>
-            </select>
-        </form>
+            <!-- Search -->
+            <section id="search" hidden>
+                <h1>Search</h1>
+                <form id="search-form" class="search-bar">
+                    <img
+                        src="images/search.svg"
+                        class="search-icon"
+                        alt="search icon"
+                    />
+                    <input
+                        id="search-input"
+                        type="search"
+                        placeholder="Search for a title"
+                        aria-label="Search media"
+                    />
+                    <select id="media-type" aria-label="Media type">
+                        <option value="ANIME">Anime</option>
+                        <option value="MANGA">Manga</option>
+                    </select>
+                </form>
 
-        <ul id="items-container"></ul>
+                <ul id="items-container"></ul>
 
-        <div class="no-titles">
-            <img src="images/movie-clip.svg"/>
-            <p class="blank-search">Start exploring</p>
-        </div>
+                <div class="no-titles">
+                    <img src="images/movie-clip.svg" />
+                    <p class="blank-search">Start exploring</p>
+                </div>
+            </section>
 
-    </section>
-
-    <!-- Profile -->
-     <section id="profile" hidden>
-
-     </section>
-
-    </main>
-    <script src="index.js"></script>
-    <script src="mylist.js"></script>
-    <script src="search.js"></script>
-  </body>
+            <!-- Profile -->
+            <section id="profile" hidden>
+                <h1>Profile</h1>
+            </section>
+        </main>
+        <script type="module" src="index.js"></script>
+        <script type="module" src="mylist.js"></script>
+        <script type="module" src="search.js"></script>
+    </body>
 </html>

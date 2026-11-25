@@ -1,12 +1,14 @@
 const itemsContainer = document.getElementById("items-container");
-const findAnime = document.getElementById("find-anime")
-const searchAnime = document.getElementById("find-anime-search")
+const searchForm = document.getElementById("search-form");
+const searchInput = document.getElementById("search-input");
+const searchSection = document.getElementById("search");
+const typeSelect = document.getElementById("media-type");
 
-const url = "https://graphql.anilist.co"
+const url = "https://graphql.anilist.co";
 const query = `
-query ($search: String!) {
+query ($search: String, $type: MediaType) {
   Page {
-    media(search: $search, type: ANIME) {
+    media(search: $search, type: $type) {
       id
       title {
         romaji
@@ -24,115 +26,152 @@ query ($search: String!) {
       duration
       weightedScore
       format
+      type
+      chapters
+      volumes
+      status
     }
   }
 }
 `;
 
-// renderPage()
-// async function renderPage(){
-//     const saved = localStorage.getItem("searchValue")
-//     if (!saved) return
-    
-//     const startData = await fetchAnime(saved)
-//     searchAnime.value = saved
-//     if(startData) renderSearch(startData)
-// }
+const mediaFormat = {
+    TV: "TV",
+    TV_SHORT: "TV Short",
+    MOVIE: "Movie",
+    SPECIAL: "Special",
+    OVA: "OVA",
+    ONA: "ONA",
+    MUSIC: "Music",
+    MANGA: "Manga",
+    NOVEL: "Novel",
+    ONE_SHOT: "One Shot",
+};
 
-let searchedList
-findAnime.addEventListener("submit",async function (e) {
+const mediaStatus = {
+    FINISHED: "Finished",
+    RELEASING: "Releasing",
+    NOT_YET_RELEASED: "Not yet released",
+    CANCELLED: "Canceled",
+    HIATUS: "Hiatus",
+};
+
+let searchedList;
+searchForm.addEventListener("submit", async function (e) {
     e.preventDefault();
-    const searchTerm = searchAnime.value
-    if (searchTerm==""){
-        itemsContainer.innerHTML = `
+    const searchTerm = searchInput.value;
+    if (searchTerm == "") {
+        searchSection.querySelector(".no-titles").innerHTML = `
             <div class="no-titles">
                 <img src="images/movie-clip.svg"/>
-                <p class="blank-search">Start exploring</p>
-            </div>`
-    } else{
-<<<<<<< HEAD
-        try{
-            const data = await fetchAnime(searchTerm)
-            searchedList = data
-            if(data) renderSearch(data)
-            // localStorage.setItem("searchValue",searchTerm)
-        } catch (err) {itemsContainer.innerHTML = `<p style="color: red; text-align: center; font-size: 3rem; margin: 200px">Can't connect to the server</p>`}
-=======
-        const data = await fetchAnime(searchTerm)
-        searchedList = data
-        if(data) renderSearch(data)
->>>>>>> 93a20b5a5612f06ecd129132a0ab58275b14f767
+                <p>Start exploring</p>
+            </div>`;
+        itemsContainer.innerHTML = "";
+    } else {
+        try {
+            searchSection.querySelector(".no-titles").innerHTML = "";
+            const data = await fetchAnime(searchTerm);
+            searchedList = data;
+            if (data) renderSearch(data);
+        } catch (err) {
+            itemsContainer.innerHTML = `<p style="color: red; text-align: center; font-size: 3rem; margin: 200px">Can't connect to the server</p>`;
+        }
     }
 });
 
-async function fetchAnime(searchTerm){
-
+async function fetchAnime(searchTerm) {
     const options = {
         method: "POST",
         headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
+            "Content-Type": "application/json",
+            Accept: "application/json",
         },
         body: JSON.stringify({
-        query: query,
-        variables: { search: searchTerm},
+            query: query,
+            variables: {
+                search: searchTerm,
+                type: typeSelect.value,
+            },
         }),
     };
-    const res = await fetch(url, options)
-    const data = await res.json()
+    const res = await fetch(url, options);
+    const data = await res.json();
 
-    return data.data.Page.media
+    return data.data.Page.media;
 }
 
-function renderSearch(data){
-    if(data.length===0){
-        itemsContainer.innerHTML = `<p class="blank-search no-titles">Unable to find what you’re looking for.<br> Please try another search.</p>`
-    } else{
-        const animeList = JSON.parse(localStorage.getItem("animeList")) ?? []
-        itemsContainer.innerHTML = data.map(anime => `
+function renderSearch(data) {
+    if (data.length === 0) {
+        itemsContainer.innerHTML = `<p class="blank-search no-titles">Unable to find what you’re looking for.<br> Please try another search.</p>`;
+    } else {
+        const animeList = JSON.parse(localStorage.getItem("animeList")) ?? [];
+        itemsContainer.innerHTML = data
+            .map(
+                (item) =>
+                    `
             <li>
             <article class="search-card">
                 <img
-                    src="${anime.coverImage.extraLarge}"
-                    srcset="${anime.coverImage.large} 1x, ${anime.coverImage.extraLarge} 2x"
-                    alt="${anime.title.romaji}"
+                    src="${item.coverImage.extraLarge}"
+                    srcset="${item.coverImage.large} 1x, ${item.coverImage.extraLarge} 2x"
+                    alt="${item.title.romaji}"
                 />
                 <div class="card-text">
-                    <h3>${anime.title.romaji}<span>
-                        <button class="add-btn" data-id="${anime.id}">
-                            ${animeList.some(item => item.id === anime.id) ? "added" : "add"}
+                    <h3>${item.title.romaji}<span>
+                        <button class="add-btn" data-id="${item.id}">
+                            ${animeList.some((item) => item.id === item.id) ? "added" : "add"}
                         </button></span>
                     </h3>
                     
                     <div class="card-span">
-                        <p>${anime.format}</p>
-                        <p>${anime.episodes ===1 ? `${anime.duration} min` : `${anime.episodes} episodes`}</p>
-                        <p>${anime.weightedScore}%</p>
+                        <p>${mediaFormat[`${item.format}`]}</p>
+                        <p>${formatLength(item)}</p>
+                        <p>${item.weightedScore}%</p>
                     </div>
-                    <p class="anime-desc">${anime.description}</p>
-                    <p class="card-tags">${anime.genres.join(", ")}</p>
+                    <p class="anime-desc">${item.description}</p>
+                    <p class="card-tags">${item.genres.join(", ")}</p>
                 </div>
             </article>
             </li>
-            `).join("")
+            `,
+            )
+            .join("");
     }
 }
 
-itemsContainer.addEventListener("click",function(e){
-    const button = e.target.closest(".add-btn")
-    if (!button) return
-
-    const animeList = JSON.parse(localStorage.getItem("animeList")) ?? []
-    const newItem = searchedList.find( anime => anime.id === Number(button.dataset.id))
-    if (!animeList.some(anime => anime.id === newItem.id)) {
-        animeList.push(newItem)
+function formatLength(item) {
+    if (item.status === "FINISHED") {
+        if (item.type === "ANIME") {
+            return item.episodes === 1
+                ? `${item.duration} min`
+                : `${item.episodes} episodes`;
+        } else if (item.type === "MANGA") {
+            return item.chapters === 1
+                ? `${item.chapters} chapter`
+                : `${item.chapters} chapters`;
+        }
+    } else {
+        return `${mediaStatus[`${item.status}`]}`;
     }
-    
-    localStorage.setItem("animeList", JSON.stringify(animeList))
-    
-    button.textContent = "added"
-})
+}
 
+itemsContainer.addEventListener("click", function (e) {
+    const button = e.target.closest(".add-btn");
+    if (!button) return;
+    console.log(e.target.closest(".add-btn"));
+
+    const animeList = JSON.parse(localStorage.getItem("animeList")) ?? [];
+    const newItem = searchedList.find(
+        (item) => item.id === Number(button.dataset.id),
+    );
+    if (!animeList.some((anime) => anime.id === newItem.id)) {
+        animeList.push(newItem);
+    }
+
+    localStorage.setItem("animeList", JSON.stringify(animeList));
+
+    button.textContent = "added";
+});
 
 // data.data.Page.media[0]
 // {
