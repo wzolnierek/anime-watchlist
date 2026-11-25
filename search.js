@@ -50,12 +50,18 @@ findAnime.addEventListener("submit",async function (e) {
                 <p class="blank-search">Start exploring</p>
             </div>`
     } else{
+<<<<<<< HEAD
         try{
             const data = await fetchAnime(searchTerm)
             searchedList = data
             if(data) renderSearch(data)
             // localStorage.setItem("searchValue",searchTerm)
         } catch (err) {itemsContainer.innerHTML = `<p style="color: red; text-align: center; font-size: 3rem; margin: 200px">Can't connect to the server</p>`}
+=======
+        const data = await fetchAnime(searchTerm)
+        searchedList = data
+        if(data) renderSearch(data)
+>>>>>>> 93a20b5a5612f06ecd129132a0ab58275b14f767
     }
 });
 

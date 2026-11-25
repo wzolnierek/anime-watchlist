@@ -33,7 +33,7 @@ nav{
     gap: 5px;
 }
 
-header a{
+nav a{
     padding: 0 10px;
     text-decoration: none;
 
@@ -48,7 +48,7 @@ header a{
     filter: invert(1);   /* black → white */
 }
 
-header p{
+nav p{
     color: whitesmoke;
     font-size: 0.625rem;
     margin: 0;
@@ -61,7 +61,6 @@ header p{
     position: relative;
     display: flex;
     align-items: center;
-    /* justify-content: center; */
 }
 
 #find-anime-search{
@@ -222,3 +221,6 @@ h1{
     font-size: 0.875rem;
 }
 
+nav > a[aria-current="page"] {
+  color: #6d4aff;
+}
